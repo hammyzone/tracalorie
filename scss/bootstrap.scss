@@ -2,6 +2,7 @@
 @include bsBanner("");
 
 
+
 // scss-docs-start import-stack
 // Configuration
 @import "functions";
@@ -9,6 +10,8 @@
 @import "maps";
 @import "mixins";
 @import "utilities";
+
+@import '../scss/abstracts/custom_variables';
 
 // Layout & components
 @import "root";

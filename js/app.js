@@ -10,6 +10,7 @@ class CalorieTracker{
         this._displayCaloriesConsumed();
         this._displayCaloriesBurned();
         this._dispplayCaloriesRemaining();
+        this._displayCaloriesProgress();
     }
 
 //Public methods
@@ -55,12 +56,32 @@ class CalorieTracker{
 
     _dispplayCaloriesRemaining(){
         const caloriesRemainingEl = document.getElementById('calories-remaining');
-        const remaining = 
-        this._meals.reduce((total, meal) => total + meal.calories, 0)
-        -
-        this._workouts.reduce((total, workout) => total + workout.calories, 0);
-
+        const remaining = this._calorieLimit - this._totalCalories;
+        const progressEl = document.getElementById('calories-progress');
+       
         caloriesRemainingEl.innerHTML = remaining;
+
+        if (remaining <= 0) {
+            caloriesRemainingEl.parentElement.parentElement.classList.remove('bg-light');
+            caloriesRemainingEl.parentElement.parentElement.classList.add('bg-danger');
+            progressEl.classList.remove('bg-success');
+            progressEl.classList.add('bg-danger');
+        } else {
+            caloriesRemainingEl.parentElement.parentElement.classList.remove('bg-danger');
+            caloriesRemainingEl.parentElement.parentElement.classList.add('bg-light');
+            progressEl.classList.remove('bg-danger');
+            progressEl.classList.add('bg-success');
+        }
+    }
+
+    _displayCaloriesProgress(){
+        const progressEl = document.getElementById('calories-progress');
+        const percentage = (this._totalCalories / this._calorieLimit) * 100;
+        const width = Math.min(percentage, 100);
+
+        progressEl.style.width = `${width}%`;
+
+
     }
 
     _render(){
@@ -68,7 +89,7 @@ class CalorieTracker{
         this._displayCaloriesConsumed();
         this._displayCaloriesTotal();
         this._dispplayCaloriesRemaining();
-
+        this._displayCaloriesProgress();
     }
 
 }
@@ -95,6 +116,6 @@ const lunch = new Meal("Lunch", 413);
 
 const item = new CalorieTracker();
 item.addMeal(lunch);
-const run = new Workout('Sprint', 101)
+const run = new Workout('Sprint', 198)
 item.addWorkout(run)
 item.addMeal(breakfast)
